@@ -337,9 +337,12 @@ bool RefineSeqAbsolutePose(
         continue;
       Camera& camera = cameras->at(i);
 
-      // We don't optimize the rig parameters (it's likely very unconstrainted)
-      // problem.SetParameterBlockConstant(rig_qvecs_copy[i].data());
-      // problem.SetParameterBlockConstant(rig_tvecs_copy[i].data());
+      // Set some params to be constant, we believe good enough
+      problem.SetParameterBlockConstant(rig_qvecs[i].data());
+      // problem.SetParameterBlockConstant(rig_tvecs[i].data());
+      // problem.SetParameterBlockConstant(qvec_data);
+      problem.SetParameterBlockConstant(tvec_data);
+      
 
       if (!options.refine_focal_length && !options.refine_extra_params) {
         problem.SetParameterBlockConstant(camera.ParamsData());
